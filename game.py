@@ -14,6 +14,9 @@ class Game:
             self.field.append([])
             for x in range(self.field_width):
                 self.field[y].append(colors.GAMEBG)
+
+        self.empty_row = self.field[0]
+
         self.block = None
         self.new_block()
 
@@ -39,6 +42,7 @@ class Game:
                     x = tile[0]
                     y = tile[1]
                     self.field[y][x] = self.block.color
+                self.check_rows()
                 self.new_block()
                 return "ground"
         self.block.y += 1
@@ -71,6 +75,18 @@ class Game:
             tile = (self.block.x + tile_pos[0], self.block.y + tile_pos[1])
             new_tiles.append(tile)
         self.block.tiles = new_tiles
+
+    def check_rows(self):
+        for y in range(self.field_height):
+            full_row = True
+            for x in range(self.field_width):
+                tile = (x, y)
+                if self.free_tile(tile):
+                    full_row = False
+                    break
+            if full_row:
+                self.field.pop(y)
+                self.field.insert(0, self.empty_row)
 
     def can_move(self, pos, dir):
         x = pos[0]
