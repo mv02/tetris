@@ -11,11 +11,7 @@ class Game:
         self.field_height = field_height
 
         for y in range(self.field_height):
-            self.field.append([])
-            for x in range(self.field_width):
-                self.field[y].append(colors.GAMEBG)
-
-        self.empty_row = self.field[0]
+            self.field.append(self.empty_row())
 
         self.block = None
         self.new_block()
@@ -86,7 +82,7 @@ class Game:
                     break
             if full_row:
                 self.field.pop(y)
-                self.field.insert(0, self.empty_row)
+                self.field.insert(0, self.empty_row())
 
     def can_move(self, pos, dir):
         x = pos[0]
@@ -96,4 +92,10 @@ class Game:
     def free_tile(self, tile):
         x = tile[0]
         y = tile[1]
-        return 0 <= x < self.field_width and 0 <= y < self.field_height and self.field[y][x] == colors.GAMEBG
+        return 0 <= x < self.field_width and y < self.field_height and self.field[y][x] == colors.GAMEBG
+
+    def empty_row(self):
+        row = []
+        for x in range(self.field_width):
+            row.append(colors.GAMEBG)
+        return row
