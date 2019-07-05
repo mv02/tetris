@@ -36,19 +36,10 @@ while True:
                 pygame.time.set_timer(drop_event, 40)
         elif event.type == drop_event:
             graphics.remove_block(game.block)
-            if game.fall() == "ground":
+            state = game.fall()
+            if state == "ground":
                 graphics.draw_field(game.field)
                 pygame.time.set_timer(drop_event, 300)
+            elif state == "lose":
+                pygame.quit()
             graphics.draw_block(game.block)
-
-    # keys = pygame.key.get_pressed()
-    # if keys[pygame.K_LEFT]:
-    #     graphics.remove_block(game.block)
-    #     game.move(-1)
-    #     graphics.draw_block(game.block)
-    #     pygame.time.delay(100)
-    # if keys[pygame.K_RIGHT]:
-    #     graphics.remove_block(game.block)
-    #     game.move(1)
-    #     graphics.draw_block(game.block)
-    #     pygame.time.delay(100)

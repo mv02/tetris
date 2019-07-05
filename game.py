@@ -5,6 +5,9 @@ from block import Block
 
 class Game:
     field = []
+    level = 0
+    score = 0
+    lines = 0
 
     def __init__(self, field_width, field_height):
         self.field_width = field_width
@@ -16,19 +19,13 @@ class Game:
         self.block = None
         self.new_block()
 
-    # def start(self):
-        # field[1][1] = field[1][2] = field[1][3] = field[2][2] = graphics.GREEN
-        # field[1][5] = field[2][5] = field[3][5] = field[3][6] = graphics.BLUE
-        # field[1][7] = field[1][8] = field[2][8] = field[3][8] = graphics.YELLOW
-        # field[4][1] = field[4][2] = field[5][2] = field[5][3] = graphics.ORANGE
-        # field[8][1] = field[8][2] = field[7][2] = field[7][3] = graphics.PINK
-        # field[5][5] = field[5][6] = field[5][7] = field[5][8] = graphics.RED
-        # field[7][7] = field[7][8] = field[8][7] = field[8][8] = graphics.PURPLE
-
     def new_block(self):
         del self.block
         self.block = Block(3, 0)
         self.set_tiles()
+        print("LEVEL:", self.level)
+        print("LINES:", self.lines)
+        print("SCORE:", self.score)
 
     def fall(self):
         for tile in self.block.tiles:
@@ -37,8 +34,13 @@ class Game:
                 for tile in self.block.tiles:
                     x = tile[0]
                     y = tile[1]
+                    if y < 0:
+                        return "lose"
                     self.field[y][x] = self.block.color
-                self.check_rows()
+                cleared_lines = self.check_rows()
+                if cleared_lines != 0:
+                    self.check_level()
+                    self.change_score(cleared_lines)
                 self.new_block()
                 return "ground"
         self.block.y += 1
@@ -73,6 +75,8 @@ class Game:
         self.block.tiles = new_tiles
 
     def check_rows(self):
+        full_rows = []
+
         for y in range(self.field_height):
             full_row = True
             for x in range(self.field_width):
@@ -81,8 +85,28 @@ class Game:
                     full_row = False
                     break
             if full_row:
-                self.field.pop(y)
-                self.field.insert(0, self.empty_row())
+                full_rows.append(y)
+
+        for index in full_rows:
+            self.field.pop(index)
+            self.field.insert(0, self.empty_row())
+        cleared_lines = len(full_rows)
+        self.lines += cleared_lines
+        return cleared_lines
+
+    def change_score(self, cleared):
+        if cleared == 1:
+            self.score += 40 * (self.level + 1)
+        elif cleared == 2:
+            self.score += 100 * (self.level + 1)
+        elif cleared == 3:
+            self.score += 300 * (self.level + 1)
+        elif cleared == 4:
+            self.score += 1200 * (self.level + 1)
+
+    def check_level(self):
+        if self.lines > 0 and self.lines % 5 == 0:
+            self.level += 1
 
     def can_move(self, pos, dir):
         x = pos[0]
