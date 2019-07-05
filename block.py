@@ -17,39 +17,40 @@ class Block:
             var3 = [(-1, 0), (0, 0), (1, 0), (0, 1)]
             var4 = [(0, -1), (-1, 0), (0, 0), (0, 1)]
             self.tile_positions = [var1, var2, var3, var4]
-            self.color = colors.GREEN
+            self.color = colors.PURPLE
         elif shape == "L":
             var1 = [(1, -1), (-1, 0), (0, 0), (1, 0)]
             var2 = [(0, -1), (0, 0), (0, 1), (1, 1)]
             var3 = [(-1, 0), (0, 0), (1, 0), (-1, 1)]
             var4 = [(-1, -1), (0, -1), (0, 0), (0, 1)]
             self.tile_positions = [var1, var2, var3, var4]
-            self.color = colors.BLUE
+            self.color = colors.ORANGE
         elif shape == "J":
             var1 = [(-1, -1), (-1, 0), (0, 0), (1, 0)]
             var2 = [(0, -1), (1, -1), (0, 0), (0, 1)]
             var3 = [(-1, 0), (0, 0), (1, 0), (1, 1)]
             var4 = [(0, -1), (0, 0), (-1, 1), (0, 1)]
             self.tile_positions = [var1, var2, var3, var4]
-            self.color = colors.YELLOW
+            self.color = colors.BLUE
         elif shape == "S":
             var1 = [(0, -1), (1, -1), (-1, 0), (0, 0)]
             var2 = [(0, -1), (0, 0), (1, 0), (1, 1)]
             self.tile_positions = [var1, var2]
-            self.color = colors.PINK
+            self.color = colors.GREEN
         elif shape == "Z":
             var1 = [(-1, -1), (0, -1), (0, 0), (1, 0)]
             var2 = [(1, -1), (0, 0), (1, 0), (0, 1)]
             self.tile_positions = [var1, var2]
-            self.color = colors.ORANGE
+            self.color = colors.RED
         elif shape == "I":
             var1 = [(-1, 0), (0, 0), (1, 0), (2, 0)]
             var2 = [(0, -1), (0, 0), (0, 1), (0, 2)]
             self.tile_positions = [var1, var2]
-            self.color = colors.RED
+            # ma byt svetle modre
+            self.color = colors.PINK
         elif shape == "O":
             var1 = [(0, 0), (1, 0), (0, 1), (1, 1)]
             self.tile_positions = [var1]
-            self.color = colors.PURPLE
+            self.color = colors.YELLOW
 
         self.orientation = 0
