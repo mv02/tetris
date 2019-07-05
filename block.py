@@ -9,6 +9,7 @@ class Block:
         self.x = x
         self.y = y
         self.tiles = []
+
         shape = shapes[random.randint(0, len(shapes) - 1)]
 
         if shape == "T":
@@ -53,4 +54,4 @@ class Block:
             self.tile_positions = [var1]
             self.color = colors.YELLOW
 
-        self.orientation = 0
+        self.orientation = random.randint(0, len(self.tile_positions) - 1)

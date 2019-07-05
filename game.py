@@ -21,11 +21,8 @@ class Game:
 
     def new_block(self):
         del self.block
-        self.block = Block(3, 0)
+        self.block = Block(4, 0)
         self.set_tiles()
-        print("LEVEL:", self.level)
-        print("LINES:", self.lines)
-        print("SCORE:", self.score)
 
     def fall(self):
         for tile in self.block.tiles:
@@ -38,10 +35,11 @@ class Game:
                         return "lose"
                     self.field[y][x] = self.block.color
                 cleared_lines = self.check_rows()
-                if cleared_lines != 0:
-                    self.check_level()
-                    self.change_score(cleared_lines)
                 self.new_block()
+                if cleared_lines != 0:
+                    self.change_score(cleared_lines)
+                    self.check_level()
+                    return "score"
                 return "ground"
         self.block.y += 1
         self.set_tiles()
