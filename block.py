@@ -55,3 +55,26 @@ class Block:
             self.color = colors.YELLOW
 
         self.orientation = random.randint(0, len(self.tile_positions) - 1)
+
+        min_x = 0
+        max_x = 0
+        min_y = 0
+        max_y = 0
+
+        for tile_pos in self.tile_positions[self.orientation]:
+            x = tile_pos[0]
+            y = tile_pos[1]
+            if x < min_x:
+                min_x = x
+            elif x > max_x:
+                max_x = x
+            if y < min_y:
+                min_y = y
+            elif y > max_y:
+                max_y = y
+
+        self.min_x = min_x
+        self.min_y = min_y
+
+        self.width = max_x - min_x + 1
+        self.height = max_y - min_y + 1

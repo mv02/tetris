@@ -17,11 +17,10 @@ class Game:
             self.field.append(self.empty_row())
 
         self.block = None
-        self.new_block()
 
-    def new_block(self):
+    def new_block(self, block):
         del self.block
-        self.block = Block(4, 0)
+        self.block = block
         self.set_tiles()
 
     def fall(self):
@@ -35,7 +34,6 @@ class Game:
                         return "lose"
                     self.field[y][x] = self.block.color
                 cleared_lines = self.check_rows()
-                self.new_block()
                 if cleared_lines != 0:
                     self.change_score(cleared_lines)
                     self.check_level()

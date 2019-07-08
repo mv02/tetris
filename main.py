@@ -12,6 +12,10 @@ graphics.draw_window()
 graphics.draw_info(game.level, game.lines, game.score)
 graphics.draw_field(game.field)
 
+game.new_block(Block(4, 0))
+next_block = Block(4, 0)
+graphics.draw_next(next_block)
+
 drop_event = pygame.USEREVENT + 1
 pygame.time.set_timer(drop_event, 300)
 
@@ -41,10 +45,16 @@ while True:
             state = game.fall()
             if state == "ground":
                 graphics.draw_field(game.field)
+                game.new_block(next_block)
+                next_block = Block(4, 0)
+                graphics.draw_next(next_block)
                 pygame.time.set_timer(drop_event, 300)
             elif state == "score":
                 graphics.draw_field(game.field)
                 graphics.draw_info(game.level, game.lines, game.score)
+                game.new_block(next_block)
+                next_block = Block(4, 0)
+                graphics.draw_next(next_block)
                 pygame.time.set_timer(drop_event, 300)
             elif state == "lose":
                 pygame.quit()
