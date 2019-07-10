@@ -37,7 +37,7 @@ class Game:
                 if cleared_lines != 0:
                     self.change_score(cleared_lines)
                     self.check_level()
-                    return "score" + str(self.level)
+                    return "score"
                 return "ground"
         self.block.y += 1
         self.set_tiles()
@@ -46,7 +46,7 @@ class Game:
     def move(self, dir):
         for tile in self.block.tiles:
             if not self.can_move(tile, (dir, 0)):
-                print("Nejde posunout")
+                # print("Nejde posunout")
                 return
         self.block.x += dir
         self.set_tiles()
@@ -60,7 +60,7 @@ class Game:
             tile = (self.block.x + tile_pos[0], self.block.y + tile_pos[1])
             if not self.free_tile(tile):
                 self.block.orientation = prev_orientation
-                print("Nejde otočit")
+                # print("Nejde otočit")
                 return
         self.set_tiles()
 
@@ -102,7 +102,8 @@ class Game:
             self.score += 1200 * (self.level + 1)
 
     def check_level(self):
-        if self.lines > 0 and self.lines % 5 == 0:
+        self.level = -1
+        for i in range(0, self.lines + 1, 5):
             self.level += 1
 
     def can_move(self, pos, dir):

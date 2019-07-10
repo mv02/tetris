@@ -119,19 +119,26 @@ class Graphics:
             for x in range(len(field[y])):
                 self.draw_tile(self.screen, x, y, field[y][x], margin, border)
         pygame.display.flip()
-        print("Překresleno")
+        # print("Překresleno")
 
     def draw_tile(self, surf, x, y, color, margin, border):
         self.draw_square(surf, margin + border + x * tile_size, margin + border + y * tile_size, tile_size, colors.GAMEBG)
-        self.draw_square(surf, margin + border + x * tile_size + tile_padding, margin + border + y * tile_size + tile_padding, tile_size - 2 * tile_padding, color)
+        # self.draw_square(surf, margin + border + x * tile_size + tile_padding, margin + border + y * tile_size + tile_padding, tile_size - 2 * tile_padding, color)
+        if color != colors.GAMEBG:
+            self.draw_image(surf, margin + border + x * tile_size + tile_padding, margin + border + y * tile_size + tile_padding, tile_size - 2 * tile_padding, color)
 
     def draw_square(self, surf, x, y, size, color):
         pygame.draw.rect(surf, color, pygame.Rect(x, y, size, size))
+
+    def draw_image(self, surf, x, y, size, color):
+        image = pygame.image.load("textures\\" + color + ".png")
+        image = pygame.transform.scale(image, (size, size))
+        surf.blit(image, pygame.Rect(x, y, size, size))
 
     def game_over(self):
         text = font3.render("GAME OVER", True, colors.RED)
         text_width = text.get_width()
         text_height = text.get_height()
-        self.screen.fill(colors.BORDER)
+        self.screen.fill(colors.BLACK)
         self.screen.blit(text, pygame.Rect(self.screen_width / 2 - text_width / 2, self.screen_height / 2 - text_height / 2, text_width, text_height))
         pygame.display.flip()

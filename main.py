@@ -65,10 +65,8 @@ while True:
                 game.new_block(next_block)
                 next_block = Block(4, 0)
                 graphics.draw_next(next_block)
-
-                level = state.replace("score", "")
                 if speed > 60:
-                    speed = 300 - int(level) * 5
+                    speed = 300 - game.level * 5
                 pygame.time.set_timer(drop_event, speed)
             elif state == "lose":
                 graphics.game_over()
