@@ -37,10 +37,11 @@ class Game:
                 if cleared_lines != 0:
                     self.change_score(cleared_lines)
                     self.check_level()
-                    return "score"
+                    return "score" + str(self.level)
                 return "ground"
         self.block.y += 1
         self.set_tiles()
+        return "none"
 
     def move(self, dir):
         for tile in self.block.tiles:

@@ -1,4 +1,5 @@
 import pygame
+import random
 import colors
 
 tile_size = 30
@@ -13,6 +14,7 @@ info_padding = 10
 pygame.font.init()
 font1 = pygame.font.Font(None, 28)
 font2 = pygame.font.Font("digital-7.ttf", 28)
+font3 = pygame.font.Font("digital-7.ttf", 60)
 
 
 class Graphics:
@@ -125,3 +127,11 @@ class Graphics:
 
     def draw_square(self, surf, x, y, size, color):
         pygame.draw.rect(surf, color, pygame.Rect(x, y, size, size))
+
+    def game_over(self):
+        text = font3.render("GAME OVER", True, colors.RED)
+        text_width = text.get_width()
+        text_height = text.get_height()
+        self.screen.fill(colors.BORDER)
+        self.screen.blit(text, pygame.Rect(self.screen_width / 2 - text_width / 2, self.screen_height / 2 - text_height / 2, text_width, text_height))
+        pygame.display.flip()

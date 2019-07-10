@@ -1,4 +1,5 @@
 import pygame
+import sys
 from graphics import Graphics
 from game import Game
 from block import Block
@@ -16,8 +17,9 @@ game.new_block(Block(4, 0))
 next_block = Block(4, 0)
 graphics.draw_next(next_block)
 
+speed = 300
 drop_event = pygame.USEREVENT + 1
-pygame.time.set_timer(drop_event, 300)
+pygame.time.set_timer(drop_event, speed)
 
 while True:
     for event in pygame.event.get():
@@ -26,6 +28,14 @@ while True:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
+            elif event.key == pygame.K_p:
+                paused = True
+                while paused:
+                    for event in pygame.event.get():
+                        if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_p:
+                                paused = False
+                                break
             elif event.key == pygame.K_UP or event.key == pygame.K_w or event.key == pygame.K_r:
                 graphics.remove_block(game.block)
                 game.rotate()
@@ -48,14 +58,21 @@ while True:
                 game.new_block(next_block)
                 next_block = Block(4, 0)
                 graphics.draw_next(next_block)
-                pygame.time.set_timer(drop_event, 300)
-            elif state == "score":
+                pygame.time.set_timer(drop_event, speed)
+            elif "score" in state:
                 graphics.draw_field(game.field)
                 graphics.draw_info(game.level, game.lines, game.score)
                 game.new_block(next_block)
                 next_block = Block(4, 0)
                 graphics.draw_next(next_block)
-                pygame.time.set_timer(drop_event, 300)
+
+                level = state.replace("score", "")
+                if speed > 60:
+                    speed = 300 - int(level) * 5
+                pygame.time.set_timer(drop_event, speed)
             elif state == "lose":
+                graphics.game_over()
+                pygame.time.delay(2000)
                 pygame.quit()
+                sys.exit()
             graphics.draw_block(game.block)
