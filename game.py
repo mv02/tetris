@@ -8,6 +8,7 @@ class Game:
     level = 0
     score = 0
     lines = 0
+    max_speed = 60
 
     def __init__(self, field_width, field_height):
         self.field_width = field_width
@@ -18,7 +19,7 @@ class Game:
 
         self.block = None
 
-    def new_block(self, block):
+    def set_block(self, block):
         del self.block
         self.block = block
         self.set_tiles()

@@ -135,6 +135,36 @@ class Graphics:
         image = pygame.transform.scale(image, (size, size))
         surf.blit(image, pygame.Rect(x, y, size, size))
 
+    def menu(self, chosen):
+        color1 = colors.YELLOW
+        color2 = colors.YELLOW
+        color3 = colors.YELLOW
+        if chosen == 1:
+            color1 = colors.RED
+        elif chosen == 2:
+            color2 = colors.RED
+        else:
+            color3 = colors.RED
+        space = 10
+        self.screen.fill(colors.BLACK)
+        text = font3.render("TETRIS", True, colors.WHITE)
+        text_width = text.get_width()
+        text_height = text.get_height()
+        self.screen.blit(text, pygame.Rect(self.screen_width / 2 - text_width / 2, 150, text_width, text_height))
+        text = font2.render("Load game", True, color1)
+        text_width = text.get_width()
+        text_height = text.get_height()
+        self.screen.blit(text, pygame.Rect(self.screen_width / 2 - text_width / 2, self.screen_height / 2 - 1.5 * text_height - space, text_width, text_height))
+        text = font2.render("New game", True, color2)
+        text_width = text.get_width()
+        text_height = text.get_height()
+        self.screen.blit(text, pygame.Rect(self.screen_width / 2 - text_width / 2, self.screen_height / 2 - text_height / 2, text_width, text_height))
+        text = font2.render("Quit", True, color3)
+        text_width = text.get_width()
+        text_height = text.get_height()
+        self.screen.blit(text, pygame.Rect(self.screen_width / 2 - text_width / 2, self.screen_height / 2 + 0.5 * text_height + space, text_width, text_height))
+        pygame.display.flip()
+
     def game_over(self):
         text = font3.render("GAME OVER", True, colors.RED)
         text_width = text.get_width()
