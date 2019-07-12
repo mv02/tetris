@@ -29,11 +29,19 @@ def new_block():
     next_block = Block(4, 0, None, None)
 
 
+pygame.mixer.pre_init(22050, -16, 2, 128)
 pygame.init()
 os.environ["SDL_VIDEO_CENTERED"] = "1"
 
 game = Game(10, 20)
 graphics = Graphics(10, 20)
+mixer = pygame.mixer
+mixer.music.load("audio\\theme-song.mp3")
+drop_sound = mixer.Sound("audio\\sfx_sounds_impact1.wav")
+score_sound = mixer.Sound("audio\\sfx_sounds_powerup5.wav")
+pause_sound = mixer.Sound("audio\\sfx_sounds_pause2_out.wav")
+unpause_sound = mixer.Sound("audio\\sfx_sounds_pause2_in.wav")
+end_sound = mixer.Sound("audio\\minecraft-damage.wav")
 
 if os.path.exists("save.xml"):
     chosen = 1
@@ -77,6 +85,8 @@ graphics.draw_info(game.level, game.lines, game.score)
 graphics.draw_field(game.field)
 graphics.draw_next(next_block)
 
+mixer.music.play(-1)
+
 speed = 300 - game.level * 10
 if speed < game.max_speed:
     speed = game.max_speed
@@ -92,10 +102,14 @@ while True:
                 quit_save()
             elif event.key == pygame.K_p:
                 paused = True
+                mixer.music.pause()
+                pause_sound.play()
                 while paused:
                     for event in pygame.event.get():
                         if event.type == pygame.KEYDOWN:
                             if event.key == pygame.K_p:
+                                unpause_sound.play()
+                                mixer.music.unpause()
                                 paused = False
                                 break
             elif event.key == pygame.K_UP or event.key == pygame.K_w or event.key == pygame.K_r:
@@ -116,12 +130,14 @@ while True:
             graphics.remove_block(game.block)
             state = game.fall()
             if state == "ground":
+                drop_sound.play()
                 graphics.draw_field(game.field)
                 new_block()
                 pygame.time.set_timer(drop_event, speed)
             elif "score" in state:
                 if "newlevel" in state:
                     graphics.draw_window()
+                score_sound.play()
                 graphics.draw_field(game.field)
                 new_block()
                 graphics.draw_info(game.level, game.lines, game.score)
@@ -130,6 +146,8 @@ while True:
                     speed = game.max_speed
                 pygame.time.set_timer(drop_event, speed)
             elif state == "lose":
+                mixer.music.stop()
+                end_sound.play()
                 graphics.game_over()
                 pygame.time.delay(2000)
                 quit_del_save()
