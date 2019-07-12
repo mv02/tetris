@@ -1,6 +1,7 @@
 import pygame
 import random
 import colors
+from PIL import Image
 
 tile_size = 30
 tile_padding = 1
@@ -15,7 +16,9 @@ pygame.font.init()
 font1 = pygame.font.Font(None, 28)
 font2 = pygame.font.Font("digital-7.ttf", 28)
 font3 = pygame.font.Font("digital-7.ttf", 60)
+font4 = pygame.font.Font(None, 32)
 
+backgrounds = ["Wedding Day Blues", "Metapolis", "Shifter", "Citrus Peel", "Burning Orange", "Neuromancer", "Piggy Pink", "Cool Blues", "Amin", "Yoda"]
 
 class Graphics:
 
@@ -33,6 +36,11 @@ class Graphics:
         self.info_y3 = 3 * margin + 5 * border + 1.25 * info_height
         self.info_y4 = 4 * margin + 7 * border + 1.5 * info_height
 
+        # self.backgrounds = []
+        # self.current_bg = 0
+        # for i in range(5):
+        #     self.backgrounds.append(self.background_gen(self.screen_width, self.screen_height, i))
+
     def draw_block(self, block):
         for tile in block.tiles:
             if tile[0] >= 0 and tile[1] >= 0:
@@ -46,9 +54,38 @@ class Graphics:
         pygame.display.flip()
 
     def draw_window(self):
-        self.screen.fill(colors.WINDOWBG)
+        # self.screen.fill(colors.WINDOWBG)
+        # jedno pozadi:
+        bg = pygame.image.load("backgrounds\\Wedding Day Blues.jpg")
+        # vice pozadi:
+        # bg = pygame.image.load("backgrounds\\" + backgrounds[random.randint(0, len(backgrounds) - 1)] + ".jpg")
+        # nahodne generovana pozadi:
+        # bg = pygame.image.load(self.backgrounds[self.current_bg])
+        self.screen.blit(bg, pygame.Rect(0, 0, self.screen_width, self.screen_height))
         self.screen.fill(colors.BORDER, pygame.Rect(margin, margin, self.game_width + 2 * border, self.game_height + 2 * border))
         pygame.display.flip()
+        # self.current_bg += 1
+        # if self.current_bg >= len(self.backgrounds):
+        #     self.current_bg = 0
+
+    def background_gen(self, width, height, name):
+        img = Image.new("RGB", (width, height))
+        pixels = img.load()
+
+        color1 = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        # color2 = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        color2 = (random.randint(color1[0], 255), random.randint(color1[1], 255), random.randint(color1[2], 255))
+
+        for y in range(height):
+            for x in range(width):
+                sance = width - x
+                num = random.randint(0, width)
+                if num < sance:
+                    pixels[x, y] = color1
+                else:
+                    pixels[x, y] = color2
+        img.save("background" + str(name) + ".png")
+        return "background" + str(name) + ".png"
 
     def draw_level(self, level):
         text = font1.render("LEVEL:", True, colors.BORDER)
@@ -112,7 +149,22 @@ class Graphics:
         self.draw_level(level)
         self.draw_lines(lines)
         self.draw_score(score)
+        self.draw_title()
         pygame.display.flip()
+
+    def draw_title(self):
+        text2 = font1.render("LSM 2019", True, colors.BLACK)
+        text_width2 = text2.get_width()
+        text_height2 = text2.get_height()
+        self.screen.blit(text2, pygame.Rect(self.screen_width - margin - text_width2, self.screen_height - margin - text_height2, text_width2, text_height2))
+        logo_size = 25
+        logo = pygame.image.load("textures\\logo.jpg")
+        logo = pygame.transform.smoothscale(logo, (logo_size, logo_size))
+        self.screen.blit(logo, pygame.Rect(self.screen_width - 2 * margin - text_width2 - logo_size, self.screen_height - margin - text_height2 / 2 - logo_size / 2, text_height2, text_height2))
+        text1 = font3.render("Tetris", True, colors.BLACK)
+        text_width1 = text1.get_width()
+        text_height1 = text1.get_height()
+        self.screen.blit(text1, pygame.Rect(self.screen_width - margin - text_width1, self.screen_height - 2 * margin - text_height1 - text_height2, text_width1, text_height1))
 
     def draw_field(self, field):
         for y in range(len(field)):

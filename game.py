@@ -37,8 +37,8 @@ class Game:
                 cleared_lines = self.check_rows()
                 if cleared_lines != 0:
                     self.change_score(cleared_lines)
-                    self.check_level()
-                    return "score"
+                    changed_level = self.check_level()
+                    return "score " + changed_level
                 return "ground"
         self.block.y += 1
         self.set_tiles()
@@ -103,9 +103,13 @@ class Game:
             self.score += 1200 * (self.level + 1)
 
     def check_level(self):
-        self.level = -1
+        new_level = -1
         for i in range(0, self.lines + 1, 5):
-            self.level += 1
+            new_level += 1
+        if new_level > self.level:
+            self.level = new_level
+            return "newlevel"
+        return ""
 
     def can_move(self, pos, dir):
         x = pos[0]

@@ -119,7 +119,9 @@ while True:
                 graphics.draw_field(game.field)
                 new_block()
                 pygame.time.set_timer(drop_event, speed)
-            elif state == "score":
+            elif "score" in state:
+                if "newlevel" in state:
+                    graphics.draw_window()
                 graphics.draw_field(game.field)
                 new_block()
                 graphics.draw_info(game.level, game.lines, game.score)
